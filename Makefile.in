@@ -151,7 +151,6 @@ endif
 CC:=@CC@
 CXX:=@CXX@
 AR:=@AR@
-STRIP:=@STRIP@
 OBJECTS:=$(subst .cc,.o,$(SOURCE))
 
 ifeq ("@STATIC@", "yes")
@@ -187,6 +186,12 @@ endif
 
 ifeq ("@STATIC@", "yes")
 LDFLAGS+=-static
+endif
+
+ifeq ("@ENABLE_STRIPPING@", "yes")
+STRIP:=@STRIP@
+else
+STRIP:=@true
 endif
 
 INSTALL:=@INSTALL@

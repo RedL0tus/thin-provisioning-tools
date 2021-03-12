@@ -20,13 +20,13 @@
 
 AC_PREREQ(2.61)
 
-################################################################
+#####################################################################
 dnl -- Process this file with autoconf to produce a configure script.
 AC_INIT
 # AC_CONFIG_HEADERS([configure.h])
 
-################################################################################					     
-dnl -- Setup the directory where autoconf has auxilary files								     
+################################################################
+dnl -- Setup the directory where autoconf has auxilary files
 AC_CONFIG_AUX_DIR(autoconf)
 AC_CANONICAL_TARGET([])
 AC_PROG_CXX([g++])
@@ -42,8 +42,6 @@ AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 AC_PROG_INSTALL
 AC_DEFUN([AC_PROG_STRIP], [AC_CHECK_TOOL(STRIP, strip, :)])
-AC_PROG_STRIP
-AC_ARG_VAR(STRIP, [Command for discarding symbols from object files])
 AC_DEFUN([AC_PROG_AR], [AC_CHECK_TOOL(AR, ar, :)])
 AC_PROG_AR
 AC_ARG_VAR(AR, [Program that maintains archive files])
@@ -175,6 +173,18 @@ AC_ARG_ENABLE(static,
 AC_MSG_RESULT($STATIC)
 
 ################################################################################
+dnl -- Enable automatic stripping
+AC_MSG_CHECKING(whether to enable automatic stripping)
+AC_ARG_ENABLE(stripping,
+              AC_HELP_STRING(--enable-stripping, [enable automatic stripping]),
+              ENABLE_STRIPPING=$enableval, ENABLE_STRIPPING=yes)
+AC_MSG_RESULT($ENABLE_STRIPPING)
+if test "$ENABLE_STRIPPING" = "yes"; then
+    AC_PROG_STRIP
+    AC_ARG_VAR(STRIP, [Command for discarding symbols from object files])
+fi
+
+################################################################################
 dnl -- Check for getopt
 AC_CHECK_HEADERS(getopt.h, AC_DEFINE([HAVE_GETOPTLONG], 1, [Define to 1 if getopt_long is available.]))
 
@@ -205,6 +215,7 @@ AC_SUBST(THIN_PROVISIONING_TOOLS_VERSION)
 AC_SUBST(STATIC_CXX)
 AC_SUBST(DEVTOOLS)
 AC_SUBST(STATIC)
+AC_SUBST(ENABLE_STRIPPING)
 
 ################################################################################
 dnl -- First and last lines should not contain files to generate in order to
